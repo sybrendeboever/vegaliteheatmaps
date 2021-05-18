@@ -24,27 +24,31 @@
     <div id="vis"></div>
     <script type="text/javascript">
       var yourViz = {
-        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 
-"config": {
-  "view": {"strokeWidth": 0,"step":4},
-  "axis": { "domain": false},
-  "padding":0
-},
+  "config": {
+    "view": {"strokeWidth": 0,"step":4},
+    "axis": { "domain": false},
+    "padding":0
+  },
 
-"autosize":{
-  "resize": true
-},
+  "autosize":{
+    "resize": true
+  },
 
-"columns": 3,
+  "columns": 3,
 
-"concat": [
-  {
-    "params": [
-      {
-        "name": "select_country",
-        "select":{"type":"point","fields": ["country"]},
-        "bind": {"input": "select", "options": [null, "Algeria", "Angola", "Argentina", 
+  "concat": [
+    {
+      "params": [
+        {
+          "name": "hover",
+          "select":{"type":"point","fields": ["country"],"on":"mouseover","clear":"mouseout"}
+        },
+        {
+          "name": "select_country",
+          "select":{"type":"point","fields": ["country"]},
+          "bind": {"input": "select", "options": [null, "Algeria", "Angola", "Argentina", 
 "Australia", "Austria", "Azerbaijan", "Bahrain", "Bangladesh", 
 "Belarus", "Belgium", "Bolivia", "Brazil", "Brunei", "Bulgaria", 
 "Canada", "Chad", "Chile", "China", "Colombia", "Congo", "Costa Rica", 
@@ -65,416 +69,448 @@
 "Tunisia", "Turkey", "Turkmenistan", "Ukraine", "United Arab Emirates", 
 "United Kingdom", "United States", "Uruguay", "USSR", "Uzbekistan", 
 "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"]}
+        },
+      {
+        "name":"select_continent",
+        "select":{"type":"point","fields": ["continent"]},
+        "bind":{"input": "select","options":[null, "Africa", "Asia", "Europe", "North America", "Oceania", "South America"]}
       },
-    {
-      "name":"select_continent",
-      "select":{"type":"point","fields": ["continent"]},
-      "bind":{"input": "select","options":[null, "Africa", "Asia", "Europe", "North America", "Oceania", "South America"]}
-    },
-    {
-      "name": "size_height",
-      "select":{
-        "type":"point",
-        "on":"mouseover",
-        "clear":"mouseout"
+      {
+        "name": "size_height",
+        "select":{
+          "type":"point",
+          "on":"mouseover",
+          "clear":"mouseout"
+        }
       }
-    }
-  ],
-
-    "data": {
-      "name":"data_coal",
-      "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_coal_consumption.csv",
-      "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","coal_consumption":"number"}}
-      },
-    "transform": [
-      {"calculate": "round(datum.coal_consumption*pow(10,2))/pow(10,2)","as":"round"}
     ],
-    "width": 300,
-    "height": 300,
-    "mark":"rect",
-    "encoding": {
-      "x": {
-        "field":"year",
-        "type":"ordinal",
-        "axis":null
-        },
-      "y": {
-        "field":"country",
-        "type":"nominal",
-        "axis":null,
-        "sort":[]
-        },
-      "color": {
-        "field":"coal_consumption",
-        "type": "quantitative",
-        "scale":{"scheme":"Greys"},
-        "legend":null
-        },
-      "opacity":{
-        "condition":{"param":"select_continent","value":1},"value":0.25},
-      "tooltip": [
-        {"field":"sources","type": "nominal","title":"Resource"},
-        {"field":"country","type": "nominal","title":"Country"},
-        {"field":"continent","type": "nominal","title":"Continent"},
-        {"field":"year","title":"Year"},
-        {"field":"round","type": "quantitative","title":"Log-consumption"}
-        ]
-    }
-  },
-  
-  {
-    "data": {
-    "name":"data_gas",
-    "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_gas_consumption.csv",
-    "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","gas_consumption":"number"}}
-    },
-    "transform": [
-      {"calculate": "round(datum.gas_consumption*pow(10,2))/pow(10,2)","as":"round"}
-    ],
-    "width": 300,
-    "height": 300,
-    "mark":"rect",
-    "encoding": {
-      "x": {
-        "field":"year",
-        "type":"ordinal",
-        "axis":null
-        },
-      "y": {
-        "field":"country",
-        "type":"nominal",
-        "axis":null,
-        "sort":[]
-        },
-      "color": {
-        "field":"gas_consumption",
-        "type": "quantitative",
-        "scale":{"scheme":"yelloworangebrown"},
-        "legend":null
-        },
-      "opacity":{
-        "condition":{"param":"select_country","value":1},
-        "value":0.25
-      },
-      "tooltip": [
-        {"field":"sources","type": "nominal","title":"Resource"},
-        {"field":"country","type": "nominal","title":"Country"},
-        {"field":"continent","type": "nominal","title":"Continent"},
-        {"field":"year","title":"Year"},
-        {"field":"round","type": "quantitative","title":"Log-consumption"}
-        ]
-    }
-  },
 
-  {
-    "data": {
-    "name":"data_hydro",
-    "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_hydro_consumption.csv",
-    "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","hydro_consumption":"number"}}
-    },
-    "transform": [
-      {"calculate": "round(datum.hydro_consumption*pow(10,2))/pow(10,2)","as":"round"}
-    ],
-    "width": 300,
-    "height": 300,
-    "mark":"rect",
-    "encoding": {
-      "x": {
-        "field":"year",
-        "type":"ordinal",
-        "axis":null
+      "data": {
+        "name":"data_coal",
+        "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_coal_consumption.csv",
+        "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","coal_consumption":"number"}}
         },
-      "y": {
-        "field":"country",
-        "type":"nominal",
-        "axis":null,
-        "sort":[]
+      "transform": [
+        {"calculate": "round(datum.coal_consumption*pow(10,2))/pow(10,2)","as":"round"}
+      ],
+      "width": 300,
+      "height": 300,
+      "mark":"rect",
+      "encoding": {
+        "x": {
+          "field":"year",
+          "type":"ordinal",
+          "axis":null
+          },
+        "y": {
+          "field":"country",
+          "type":"nominal",
+          "axis":null,
+          "sort":[]
+          },
+        "color": {
+          "field":"coal_consumption",
+          "type": "quantitative",
+          "scale":{"scheme":"Greys"},
+          "legend":null
+          },
+        "opacity": {
+          "condition": [
+            {"test":{"not": {"param": "select_continent"}},"value": 0.15},
+            {"test":{"not": {"param": "select_country"}},"value": 0.15},
+            {"test":{"not":{"param":"hover"}},"value":0.15}
+            ],"value": 1
         },
-      "color": {
-        "field":"hydro_consumption",
-        "type": "quantitative",
-        "scale":{"scheme":"lighttealblue"},
-        "legend":null
-        },
-      "opacity":{
-        "condition":{"param":"select_country","value":1},
-        "value":0.25
-      },
-      "tooltip": [
-        {"field":"sources","type": "nominal","title":"Resource"},
-        {"field":"country","type": "nominal","title":"Country"},
-        {"field":"continent","type": "nominal","title":"Continent"},
-        {"field":"year","title":"Year"},
-        {"field":"round","type": "quantitative","title":"Log-consumption"}
-        ]
-    }
-  },
-
-  {
-    "data": {
-    "name":"data_biofuel",
-    "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_biofuel_consumption.csv",
-    "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","biofuel_consumption":"number"}}
-    },
-    "transform": [
-      {"calculate": "round(datum.biofuel_consumption*pow(10,2))/pow(10,2)","as":"round"}
-    ],
-    "width": 300,
-    "height": 300,
-    "mark":"rect",
-    "encoding": {
-      "x": {
-        "field":"year",
-        "type":"ordinal",
-        "axis":null
-        },
-      "y": {
-        "field":"country",
-        "type":"nominal",
-        "axis":null,
-        "sort":[]
-        },
-      "color": {
-        "field":"biofuel_consumption",
-        "type": "quantitative",
-        "scale":{"scheme":"Browns"},
-        "legend":null
-        },
-      "opacity":{
-        "condition":{"param":"select_country","value":1},
-        "value":0.25
-      },
-      "tooltip": [
-        {"field":"sources","type": "nominal","title":"Resource"},
-        {"field":"country","type": "nominal","title":"Country"},
-        {"field":"continent","type": "nominal","title":"Continent"},
-        {"field":"year","title":"Year"},
-        {"field":"round","type": "quantitative","title":"Log-consumption"}
-        ]
-    }
-  },
-
-  {
-    "params": [
-    {
-      "name":"opac",
-      "select":{
-        "type":"point",
-        "on": "mouseover",
-        "clear":"mouseout"
-      }
-    }
-  ],
-    "data": {"name":"data_world","url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/Data_World_stack_2.csv"},
-    "width": 300,
-    "height": 300,
-    "mark": "area",
-    "encoding": {
-      "x": {
-      "timeUnit": "year",
-      "field": "year",
-      "axis": null
-      },
-      "y": {
-      "aggregate": "sum",
-      "field": "consumption",
-      "axis": null,
-      "stack": "normalize"
-      },
-      "color": {
-        "field": "sources", 
-        "type": "nominal", 
-        "scale": {"range": ["brown", "grey", "DarkOrange", "#529fc2", "#d83232","#a63cbe","gold","#8adde9"]},
-        "legend":null
-        },
-        "order": {"aggregate": "sum", "field": "consumption"},
         "tooltip": [
-          {"field":"sources","type": "nominal","title":"Resource"}
-          ],
-          "fillOpacity":{"condition":{"param": "opac","value":1},"value":0.35}
+          {"field":"sources","type": "nominal","title":"Resource"},
+          {"field":"country","type": "nominal","title":"Country"},
+          {"field":"continent","type": "nominal","title":"Continent"},
+          {"field":"year","title":"Year"},
+          {"field":"round","type": "quantitative","title":"Log-consumption"}
+          ]
       }
-  },
-
-
-  {
-    "data": {
-    "name":"data_nuclear",
-    "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_nuclear_consumption.csv",
-    "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","nuclear_consumption":"number"}}
     },
-    "transform": [
-      {"calculate": "round(datum.nuclear_consumption*pow(10,2))/pow(10,2)","as":"round"}
-    ],
-    "width": 300,
-    "height": 300,
-    "mark":"rect",
-    "encoding": {
-      "x": {
-        "field":"year",
-        "type":"ordinal",
-        "axis":null
-        },
-      "y": {
-        "field":"country",
-        "type":"nominal",
-        "axis":null,
-        "sort":[]
-        },
-      "color": {
-        "field":"nuclear_consumption",
-        "type": "quantitative",
-        "scale":{"scheme":"Reds"},
-        "legend":null
-        },
-      "opacity":{
-        "condition":{"param":"select_country","value":1},
-        "value":0.25
+    
+    {
+      "params":[{"name": "hover","select":{"type":"point","fields": ["country"],"on":"mouseover","clear":"mouseout"}}],
+      "data": {
+      "name":"data_gas",
+      "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_gas_consumption.csv",
+      "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","gas_consumption":"number"}}
       },
-      "tooltip": [
-        {"field":"sources","type": "nominal","title":"Resource"},
-        {"field":"country","type": "nominal","title":"Country"},
-        {"field":"continent","type": "nominal","title":"Continent"},
-        {"field":"year","title":"Year"},
-        {"field":"round","type": "quantitative","title":"Log-consumption"}
-        ]
-    }
-  },
-
-  {
-    "data": {
-    "name":"data_oil",
-    "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_oil_consumption.csv",
-    "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","oil_consumption":"number"}}
+      "transform": [
+        {"calculate": "round(datum.gas_consumption*pow(10,2))/pow(10,2)","as":"round"}
+      ],
+      "width": 300,
+      "height": 300,
+      "mark":"rect",
+      "encoding": {
+        "x": {
+          "field":"year",
+          "type":"ordinal",
+          "axis":null
+          },
+        "y": {
+          "field":"country",
+          "type":"nominal",
+          "axis":null,
+          "sort":[]
+          },
+        "color": {
+          "field":"gas_consumption",
+          "type": "quantitative",
+          "scale":{"scheme":"yelloworangebrown"},
+          "legend":null
+          },
+        "opacity": {
+          "condition": [
+            {"test":{"not": {"param": "select_continent"}},"value": 0.15},
+            {"test":{"not": {"param": "select_country"}},"value": 0.15},
+            {"test":{"not":{"param":"hover"}},"value":0.15}
+            ],"value": 1
+        },
+        "tooltip": [
+          {"field":"sources","type": "nominal","title":"Resource"},
+          {"field":"country","type": "nominal","title":"Country"},
+          {"field":"continent","type": "nominal","title":"Continent"},
+          {"field":"year","title":"Year"},
+          {"field":"round","type": "quantitative","title":"Log-consumption"}
+          ]
+      }
     },
-    "transform": [
-      {"calculate": "round(datum.oil_consumption*pow(10,2))/pow(10,2)","as":"round"}
-    ],
-    "width": 300,
-    "height": 300,
-    "mark":"rect",
-    "encoding": {
-      "x": {
-        "field":"year",
-        "type":"ordinal",
-        "axis":null
-        },
-      "y": {
-        "field":"country",
-        "type":"nominal",
-        "axis":null,
-        "sort":[]
-        },
-      "color": {
-        "field":"oil_consumption",
-        "type": "quantitative",
-        "scale":{"scheme":"bluepurple"},
-        "legend":null
-        },
-      "opacity":{
-        "condition":{"param":"select_country","value":1},
-        "value":0.25
-      },
-      "tooltip": [
-        {"field":"sources","type": "nominal","title":"Resource"},
-        {"field":"country","type": "nominal","title":"Country"},
-        {"field":"continent","type": "nominal","title":"Continent"},
-        {"field":"year","title":"Year"},
-        {"field":"round","type": "quantitative","title":"Log-consumption"}
-        ]
-    }
-  },
 
-  {
-    "data": {
-    "name":"data_solar",
-    "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_solar_consumption.csv",
-    "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","solar_consumption":"number"}}
+    {
+      "params":[{"name": "hover","select":{"type":"point","fields": ["country"],"on":"mouseover","clear":"mouseout"}}],
+      "data": {
+      "name":"data_hydro",
+      "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_hydro_consumption.csv",
+      "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","hydro_consumption":"number"}}
+      },
+      "transform": [
+        {"calculate": "round(datum.hydro_consumption*pow(10,2))/pow(10,2)","as":"round"}
+      ],
+      "width": 300,
+      "height": 300,
+      "mark":"rect",
+      "encoding": {
+        "x": {
+          "field":"year",
+          "type":"ordinal",
+          "axis":null
+          },
+        "y": {
+          "field":"country",
+          "type":"nominal",
+          "axis":null,
+          "sort":[]
+          },
+        "color": {
+          "field":"hydro_consumption",
+          "type": "quantitative",
+          "scale":{"scheme":"lighttealblue"},
+          "legend":null
+          },
+        "opacity": {
+          "condition": [
+            {"test":{"not": {"param": "select_continent"}},"value": 0.15},
+            {"test":{"not": {"param": "select_country"}},"value": 0.15},
+            {"test":{"not":{"param":"hover"}},"value":0.15}
+            ],"value": 1
+        },
+        "tooltip": [
+          {"field":"sources","type": "nominal","title":"Resource"},
+          {"field":"country","type": "nominal","title":"Country"},
+          {"field":"continent","type": "nominal","title":"Continent"},
+          {"field":"year","title":"Year"},
+          {"field":"round","type": "quantitative","title":"Log-consumption"}
+          ]
+      }
     },
-    "transform": [
-      {"calculate": "round(datum.solar_consumption*pow(10,2))/pow(10,2)","as":"round"}
-    ],
-    "width": 300,
-    "height": 300,
-    "mark":"rect",
-    "encoding": {
-      "x": {
-        "field":"year",
-        "type":"ordinal",
-        "axis":null
-        },
-      "y": {
-        "field":"country",
-        "type":"nominal",
-        "axis":null,
-        "sort":[]
-        },
-      "color": {
-        "field":"solar_consumption",
-        "type": "quantitative",
-        "scale":{"scheme":"DarkGold"},
-        "legend":null
-        },
-      "opacity":{
-        "condition":{"param":"select_country","value":1},
-        "value":0.25
-      },
-      "tooltip": [
-        {"field":"sources","type": "nominal","title":"Resource"},
-        {"field":"country","type": "nominal","title":"Country"},
-        {"field":"continent","type": "nominal","title":"Continent"},
-        {"field":"year","title":"Year"},
-        {"field":"round","type": "quantitative","title":"Log-consumption"}
-        ]
-    }
-  },
 
-  {
-    "data": {
-    "name":"data_wind",
-    "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_wind_consumption.csv",
-    "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","wind_consumption":"number"}}
+    {
+      "params":[{"name": "hover","select":{"type":"point","fields": ["country"],"on":"mouseover","clear":"mouseout"}}],
+      "data": {
+      "name":"data_biofuel",
+      "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_biofuel_consumption.csv",
+      "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","biofuel_consumption":"number"}}
+      },
+      "transform": [
+        {"calculate": "round(datum.biofuel_consumption*pow(10,2))/pow(10,2)","as":"round"}
+      ],
+      "width": 300,
+      "height": 300,
+      "mark":"rect",
+      "encoding": {
+        "x": {
+          "field":"year",
+          "type":"ordinal",
+          "axis":null
+          },
+        "y": {
+          "field":"country",
+          "type":"nominal",
+          "axis":null,
+          "sort":[]
+          },
+        "color": {
+          "field":"biofuel_consumption",
+          "type": "quantitative",
+          "scale":{"scheme":"Browns"},
+          "legend":null
+          },
+        "opacity": {
+          "condition": [
+            {"test":{"not": {"param": "select_continent"}},"value": 0.15},
+            {"test":{"not": {"param": "select_country"}},"value": 0.15},
+            {"test":{"not":{"param":"hover"}},"value":0.15}
+            ],"value": 1
+        },
+        "tooltip": [
+          {"field":"sources","type": "nominal","title":"Resource"},
+          {"field":"country","type": "nominal","title":"Country"},
+          {"field":"continent","type": "nominal","title":"Continent"},
+          {"field":"year","title":"Year"},
+          {"field":"round","type": "quantitative","title":"Log-consumption"}
+          ]
+      }
     },
-    "transform": [
-      {"calculate": "round(datum.wind_consumption*pow(10,2))/pow(10,2)","as":"round"}
-    ],
-    "width": 300,
-    "height": 300,
-    "mark":"rect",
-    "encoding": {
-      "x": {
-        "field":"year",
-        "type":"ordinal",
-        "axis":null
-        },
-      "y": {
-        "field":"country",
-        "type":"nominal",
-        "axis":null,
-        "sort":[]
-        },
-      "color": {
-        "field":"wind_consumption",
-        "type": "quantitative",
-        "scale":{"scheme":"greenblue"},
-        "legend":null
-        },
-      "opacity":{
-        "condition":{"param":"select_country","value":1},
-        "value":0.25
-      },
-      "tooltip": [
-        {"field":"sources","type": "nominal","title":"Resource"},
-        {"field":"country","type": "nominal","title":"Country"},
-        {"field":"continent","type": "nominal","title":"Continent"},
-        {"field":"year","title":"Year"},
-        {"field":"round","type": "quantitative","title":"Log-consumption"}
-        ]
-    }
-  }
 
-],
-"resolve": {"scale": {"y": "independent", "color":"independent"}},
-"spacing":-1
+    {
+      "params": [
+      {
+        "name":"opac",
+        "select":{
+          "type":"point",
+          "on": "mouseover",
+          "clear":"mouseout"
+        }
+      }
+    ],
+      "data": {"name":"data_world","url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/Data_World_stack_2.csv"},
+      "width": 300,
+      "height": 300,
+      "mark": "area",
+      "encoding": {
+        "x": {
+        "timeUnit": "year",
+        "field": "year",
+        "axis": null
+        },
+        "y": {
+        "aggregate": "sum",
+        "field": "consumption",
+        "axis": null,
+        "stack": "normalize"
+        },
+        "color": {
+          "field": "sources", 
+          "type": "nominal", 
+          "scale": {"range": ["brown", "grey", "DarkOrange", "#529fc2", "#d83232","#a63cbe","gold","#8adde9"]},
+          "legend":null
+          },
+          "order": {"aggregate": "sum", "field": "consumption"},
+          "tooltip": [
+            {"field":"sources","type": "nominal","title":"Resource"}
+            ],
+            "fillOpacity":{"condition":{"param": "opac","value":1},"value":0.35}
+        }
+    },
+
+    {
+      "params":[{"name": "hover","select":{"type":"point","fields": ["country"],"on":"mouseover","clear":"mouseout"}}],
+      "data": {
+      "name":"data_nuclear",
+      "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_nuclear_consumption.csv",
+      "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","nuclear_consumption":"number"}}
+      },
+      "transform": [
+        {"calculate": "round(datum.nuclear_consumption*pow(10,2))/pow(10,2)","as":"round"}
+      ],
+      "width": 300,
+      "height": 300,
+      "mark":"rect",
+      "encoding": {
+        "x": {
+          "field":"year",
+          "type":"ordinal",
+          "axis":null
+          },
+        "y": {
+          "field":"country",
+          "type":"nominal",
+          "axis":null,
+          "sort":[]
+          },
+        "color": {
+          "field":"nuclear_consumption",
+          "type": "quantitative",
+          "scale":{"scheme":"Reds"},
+          "legend":null
+          },
+        "opacity": {
+          "condition": [
+            {"test":{"not": {"param": "select_continent"}},"value": 0.15},
+            {"test":{"not": {"param": "select_country"}},"value": 0.15},
+            {"test":{"not":{"param":"hover"}},"value":0.15}
+            ],"value": 1
+        },
+        "tooltip": [
+          {"field":"sources","type": "nominal","title":"Resource"},
+          {"field":"country","type": "nominal","title":"Country"},
+          {"field":"continent","type": "nominal","title":"Continent"},
+          {"field":"year","title":"Year"},
+          {"field":"round","type": "quantitative","title":"Log-consumption"}
+          ]
+      }
+    },
+
+    {
+      "params":[{"name": "hover","select":{"type":"point","fields": ["country"],"on":"mouseover","clear":"mouseout"}}],
+      "data": {
+      "name":"data_oil",
+      "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_oil_consumption.csv",
+      "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","oil_consumption":"number"}}
+      },
+      "transform": [
+        {"calculate": "round(datum.oil_consumption*pow(10,2))/pow(10,2)","as":"round"}
+      ],
+      "width": 300,
+      "height": 300,
+      "mark":"rect",
+      "encoding": {
+        "x": {
+          "field":"year",
+          "type":"ordinal",
+          "axis":null
+          },
+        "y": {
+          "field":"country",
+          "type":"nominal",
+          "axis":null,
+          "sort":[]
+          },
+        "color": {
+          "field":"oil_consumption",
+          "type": "quantitative",
+          "scale":{"scheme":"bluepurple"},
+          "legend":null
+          },
+        "opacity": {
+          "condition": [
+            {"test":{"not": {"param": "select_continent"}},"value": 0.15},
+            {"test":{"not": {"param": "select_country"}},"value": 0.15},
+            {"test":{"not":{"param":"hover"}},"value":0.15}
+            ],"value": 1
+        },
+        "tooltip": [
+          {"field":"sources","type": "nominal","title":"Resource"},
+          {"field":"country","type": "nominal","title":"Country"},
+          {"field":"continent","type": "nominal","title":"Continent"},
+          {"field":"year","title":"Year"},
+          {"field":"round","type": "quantitative","title":"Log-consumption"}
+          ]
+      }
+    },
+
+    {
+      "params":[{"name": "hover","select":{"type":"point","fields": ["country"],"on":"mouseover","clear":"mouseout"}}],
+      "data": {
+      "name":"data_solar",
+      "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_solar_consumption.csv",
+      "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","solar_consumption":"number"}}
+      },
+      "transform": [
+        {"calculate": "round(datum.solar_consumption*pow(10,2))/pow(10,2)","as":"round"}
+      ],
+      "width": 300,
+      "height": 300,
+      "mark":"rect",
+      "encoding": {
+        "x": {
+          "field":"year",
+          "type":"ordinal",
+          "axis":null
+          },
+        "y": {
+          "field":"country",
+          "type":"nominal",
+          "axis":null,
+          "sort":[]
+          },
+        "color": {
+          "field":"solar_consumption",
+          "type": "quantitative",
+          "scale":{"scheme":"DarkGold"},
+          "legend":null
+          },
+        "opacity": {
+          "condition": [
+            {"test":{"not": {"param": "select_continent"}},"value": 0.15},
+            {"test":{"not": {"param": "select_country"}},"value": 0.15},
+            {"test":{"not":{"param":"hover"}},"value":0.15}
+            ],"value": 1
+        },
+        "tooltip": [
+          {"field":"sources","type": "nominal","title":"Resource"},
+          {"field":"country","type": "nominal","title":"Country"},
+          {"field":"continent","type": "nominal","title":"Continent"},
+          {"field":"year","title":"Year"},
+          {"field":"round","type": "quantitative","title":"Log-consumption"}
+          ]
+      }
+    },
+
+    {
+      "params":[{"name": "hover","select":{"type":"point","fields": ["country"],"on":"mouseover","clear":"mouseout"}}],
+      "data": {
+      "name":"data_wind",
+      "url": "https://raw.githubusercontent.com/sybrendeboever/Datavis_data/main/data2_wind_consumption.csv",
+      "format":{"type": "csv","parse":{"country":"string","year":"number","continent":"string","wind_consumption":"number"}}
+      },
+      "transform": [
+        {"calculate": "round(datum.wind_consumption*pow(10,2))/pow(10,2)","as":"round"}
+      ],
+      "width": 300,
+      "height": 300,
+      "mark":"rect",
+      "encoding": {
+        "x": {
+          "field":"year",
+          "type":"ordinal",
+          "axis":null
+          },
+        "y": {
+          "field":"country",
+          "type":"nominal",
+          "axis":null,
+          "sort":[]
+          },
+        "color": {
+          "field":"wind_consumption",
+          "type": "quantitative",
+          "scale":{"scheme":"greenblue"},
+          "legend":null
+          },
+        "opacity": {
+          "condition": [
+            {"test":{"not": {"param": "select_continent"}},"value": 0.15},
+            {"test":{"not": {"param": "select_country"}},"value": 0.15},
+            {"test":{"not":{"param":"hover"}},"value":0.15}
+            ],"value": 1
+        },
+        "tooltip": [
+          {"field":"sources","type": "nominal","title":"Resource"},
+          {"field":"country","type": "nominal","title":"Country"},
+          {"field":"continent","type": "nominal","title":"Continent"},
+          {"field":"year","title":"Year"},
+          {"field":"round","type": "quantitative","title":"Log-consumption"}
+          ]
+      }
+    }
+
+  ],
+  "resolve": {"scale": {"y": "independent", "color":"independent"}},
+  "spacing":-1
       };
       vegaEmbed('#vis', yourViz);
     </script>
